@@ -12,8 +12,8 @@ import bokeh.models as bmd
 from bokeh.models.widgets import PreText, Button
 from bokeh.io import curdoc
 from jsmol_bokeh_extension import JSMol
-from import_db import get_cif_content_from_disk as get_cif_str
-#from import_db import get_cif_content_from_os as get_cif_str
+from import_db import get_structure_content_from_disk as get_structure_str
+#from import_db import get_structure_content_from_os as get_structure_str
 from detail.query import get_sqlite_data as get_data
 
 html = bmd.Div(text=open(join(dirname(__file__), "description.html")).read(),
@@ -26,7 +26,7 @@ script_source = bmd.ColumnDataSource()
 plot_info = PreText(text='', width=300, height=100)
 
 btn_download_table = Button(label="Download json", button_type="primary")
-btn_download_cif = Button(label="Download cif", button_type="primary")
+btn_download_structure = Button(label="Download structure", button_type="primary")
 
 
 def get_name_from_url():
@@ -36,7 +36,7 @@ def get_name_from_url():
         if isinstance(name, bytes):
             name = name.decode()
     except (TypeError, KeyError):
-        name = 'linker91_CH_linker92_N_clh_relaxed'
+        name = 'C-80265-1760-17'
 
     return name
 
@@ -87,9 +87,9 @@ def table_widget(entry):
     return widgetbox(data_table)
 
 
-cof_name = get_name_from_url()
-entry = get_data(cof_name, plot_info)
-cif_str = get_cif_str(entry.filename)
+structure_name = get_name_from_url()
+entry = get_data(structure_name, plot_info)
+structure_str = get_structure_str(entry.filename)
 
 info = dict(
     height="100%",
@@ -101,18 +101,14 @@ info = dict(
     #j2sPath="https://www.materialscloud.org/discover/scripts/external/jsmol/j2s",
     serverURL="detail/static/jsmol/php/jsmol.php",
     j2sPath="detail/static/jsmol/j2s",
-    script="""set antialiasDisplay ON;
-load data "cifstring"
-{}
-end "cifstring"
-""".format(cif_str)
+    script="color cpk; set antialiasDisplay ON; load INLINE '{}'".format(structure_str)
     ## Note: Need PHP server for approach below to work
     #    script="""set antialiasDisplay ON;
     #load cif::{};
     #""".format(get_cif_url(entry.filename))
 )
 
-btn_download_cif.callback = bmd.CustomJS(args=dict(string=cif_str,
+btn_download_structure.callback = bmd.CustomJS(args=dict(string=structure_str,
                                                    filename=entry.filename),
                                          code=download_js)
 
@@ -127,7 +123,7 @@ applet = JSMol(
 sizing_mode = 'fixed'
 ly = layout([
     [
-        [[applet], [btn_download_cif]],
+        [[applet], [btn_download_structure]],
         [[table_widget(entry)], [btn_download_table]],
     ],
     [plot_info],
@@ -135,9 +131,9 @@ ly = layout([
            sizing_mode=sizing_mode)
 
 # We add this as a tab
-tab = bmd.Panel(child=ly, title=cof_name)
+tab = bmd.Panel(child=ly, title=structure_name)
 tabs = bmd.widgets.Tabs(tabs=[tab])
 
 # Put the tabs in the current document for display
-curdoc().title = "Covalent Organic Frameworks"
+curdoc().title = "AIRSS structures"
 curdoc().add_root(layout([html, tabs]))

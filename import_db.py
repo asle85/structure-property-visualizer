@@ -12,9 +12,9 @@ import re
 
 folder_db = 'data/'
 structure_folder = folder_db + '/structures/'
-structure_extension = 'cif'
+structure_extension = 'res'
 properties_csv = folder_db + '/properties.csv'
-table_name = 'cofs'  # parameters will be put in this database
+table_name = 'C_VII'  # parameters will be put in this database
 db_params = 'sqlite:///{}database.db'.format(folder_db)
 
 # when storing structures on an object store
@@ -139,20 +139,20 @@ def automap_table(engine):
     return Base.classes.get(table_name)
 
 
-def get_cif_path(filename):
+def get_structure_path(filename):
     from os.path import join, abspath
     return abspath(join(structure_folder, filename))
 
 
-def get_cif_content_from_disk(filename):
-    """Load CIF content from disk."""
-    with open(get_cif_path(filename), 'r') as f:
+def get_structure_content_from_disk(filename):
+    """Load structure content from disk."""
+    with open(get_structure_path(filename), 'r') as f:
         content = f.read()
     return content
 
 
-def get_cif_content_from_os(filename):
-    """Load CIF content via GET request from object store."""
+def get_structure_content_from_os(filename):
+    """Load structure content via GET request from object store."""
     import requests
 
     url = "{}/{}".format(os_url, filename)

@@ -87,16 +87,16 @@ def load_preset(attr, old, new):  # pylint: disable=unused-argument,redefined-bu
 
 # quantities
 nq = len(config.quantities)
-bondtypes = list(config.bondtype_dict.keys())
-bondtype_colors = list(config.bondtype_dict.values())
+#bondtypes = list(config.bondtype_dict.keys())
+#bondtype_colors = list(config.bondtype_dict.values())
 
 # quantity selectors
 plot_options = [(q, config.quantities[q]['label']) for q in config.plot_quantities]
 inp_x = Select(title='X', options=plot_options)
 inp_y = Select(title='Y', options=plot_options)
-#inp_clr = Select(title='Color', options=plot_options)
-inp_clr = Select(title='Color',
-                 options=plot_options + [('bond_type', 'Bond type')])
+inp_clr = Select(title='Color', options=plot_options)
+#inp_clr = Select(title='Color',
+#                 options=plot_options + [('bond_type', 'Bond type')])
 
 
 def on_filter_change(attr, old, new):  # pylint: disable=unused-argument
@@ -106,14 +106,14 @@ def on_filter_change(attr, old, new):  # pylint: disable=unused-argument
 
 # range sliders
 # pylint: disable=redefined-builtin
-def get_slider(desc, range, default=None):
+def get_slider(desc, range, step, default=None):
     if default is None:
         default = range
     slider = RangeSlider(title=desc,
                          start=range[0],
                          end=range[1],
                          value=default,
-                         step=0.1)
+                         step=step)
 
     slider.on_change('value', on_filter_change)
     return slider
@@ -147,7 +147,9 @@ for k in config.filter_list:
         v['default'] = None
 
     if v['type'] == 'float':
-        filters_dict[k] = get_slider(desc, v['range'], v['default'])
+        filters_dict[k] = get_slider(desc, v['range'], 0.1, v['default'])
+    elif v['type'] == 'int':
+        filters_dict[k] = get_slider(desc, v['range'], 1, v['default'])
     elif v['type'] == 'list':
         if 'labels' not in list(v.keys()):
             v['labels'] = None
@@ -237,10 +239,19 @@ def update_legends(ly):
     p = ly.children[0].children[1]
 
     #title = "{} vs {}".format(q_x["label"], q_y["label"])
-    xlabel = "{} [{}]".format(q_x["label"], q_x["unit"])
-    ylabel = "{} [{}]".format(q_y["label"], q_y["unit"])
-    xhover = (q_x["label"], "@x {}".format(q_x["unit"]))
-    yhover = (q_y["label"], "@y {}".format(q_y["unit"]))
+    if 'unit' not in list(q_x.keys()):
+        xlabel = "{}".format(q_x["label"])
+        xhover = (q_x["label"], "@x")
+    else:
+        xlabel = "{} [{}]".format(q_x["label"], q_x["unit"])
+        xhover = (q_x["label"], "@x {}".format(q_x["unit"]))
+
+    if 'unit' not in list(q_y.keys()):
+        ylabel = "{}".format(q_y["label"])
+        yhover = (q_y["label"], "@y")
+    else:
+        ylabel = "{} [{}]".format(q_y["label"], q_y["unit"])
+        yhover = (q_y["label"], "@y {}".format(q_y["unit"]))
 
     q_clr = config.quantities[inp_clr.value]
     if 'unit' not in list(q_clr.keys()):
@@ -255,24 +266,6 @@ def update_legends(ly):
         yhover,
         (q_clr["label"], clr_val),
     ]
-
-    if inp_clr.value == 'bond_type':
-        clr_label = "Bond type"
-        hover.tooltips = [
-            ("name", "@name"),
-            xhover,
-            yhover,
-            ("Bond type", "@color"),
-        ]
-    else:
-        q_clr = config.quantities[inp_clr.value]
-        clr_label = "{} [{}]".format(q_clr["label"], q_clr["unit"])
-        hover.tooltips = [
-            ("name", "@name"),
-            xhover,
-            yhover,
-            (q_clr["label"], "@color {}".format(q_clr["unit"])),
-        ]
 
     p.xaxis.axis_label = xlabel
     p.yaxis.axis_label = ylabel

@@ -14,13 +14,9 @@ from bokeh.io import curdoc
 #curdoc().add_root(layout([html]))
 
 # Put the tabs in the current document for display
-curdoc().title = "Covalent Organic Frameworks"
+curdoc().title = "AIRSS structures"
 curdoc().template_variables["figures"] = [
-    ["3a", "Deliverable Capacity <i>vs</i> Density"],
-    ["3b", "Surface area <i>vs</i> Density (3d COFs)"],
-    ["7a", "Methane uptake (low P) <i>vs</i> Density"],
-    ["7b", "Methane uptake (high P) <i>vs</i> Density"],
-    ["8b", "Deliverable capacity <i>vs</i> Density (2d COFs)"],
-    ["9b", "Deliverable capacity <i>vs</i> Density (3d COFs)"],
-    ["11", "Deliverable capacity <i>vs</i> Surface area"],
+    ["2", "Volume <i>vs</i> Enthalpy (number of atoms legend)"],
+    ["3", "Volume <i>vs</i> Pressure (number of atoms legend)"],
+    ["4", "Volume <i>vs</i> Pressure (enthalpy legend)"]
 ]

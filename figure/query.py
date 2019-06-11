@@ -41,14 +41,14 @@ def get_data_sqla(projections, sliders_dict, quantities, plot_info):
 
     nresults = len(results)
     if not results:
-        plot_info.text = "No matching COFs found."
+        plot_info.text = "No matching structures found."
         return data_empty
     elif nresults > max_points:
         results = results[:max_points]
-        plot_info.text = "{} COFs found.\nPlotting {}...".format(
+        plot_info.text = "{} structures found.\nPlotting {}...".format(
             nresults, max_points)
     else:
-        plot_info.text = "{} COFs found.\nPlotting {}...".format(
+        plot_info.text = "{} structures found.\nPlotting {}...".format(
             nresults, nresults)
 
     # x,y position
