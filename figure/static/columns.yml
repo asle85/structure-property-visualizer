@@ -1,11 +1,37 @@
 # Columns metadata
 # 2 types supported: float, list
 ---
+- column: dataset
+  type: list
+  label: Dataset
+  values:
+  - 10GPa
+  - 10GPa-II
+  - 1GPa
+  labels:
+  - C (10 GPa)
+  - C (10 GPa)-II
+  - C+H+N+O
+
+- column: x
+  type: float
+  label: x
+  range:
+  - -0.5
+  - 0.8
+
+- column: y
+  type: float
+  label: y
+  range:
+  - -0.7
+  - 0.8
+
 - column: volume
   type: float
   label: Volume
   range:
-  - 20.0
+  - 9.0
   - 245.0
   unit: Ang^3
 
@@ -16,7 +42,7 @@
   - 15
   label: Pressure
   range:
-  - 9.5
+  - 0.5
   - 10.5
   unit: GPa
 
@@ -24,13 +50,13 @@
   type: float
   label: Enthalpy
   range:
-  - -3710.0
-  - -600.0
+  - -4000.0
+  - -40.0
   unit: eV
 
 - column: natoms
   type: int
   label: Number of atoms
   range:
-  - 4
+  - 3
   - 24

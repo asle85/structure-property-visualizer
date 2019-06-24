@@ -14,7 +14,7 @@ folder_db = 'data/'
 structure_folder = folder_db + '/structures/'
 structure_extension = 'res'
 properties_csv = folder_db + '/properties.csv'
-table_name = 'C_VII'  # parameters will be put in this database
+table_name = 'pickard'  # parameters will be put in this database
 db_params = 'sqlite:///{}database.db'.format(folder_db)
 
 # when storing structures on an object store

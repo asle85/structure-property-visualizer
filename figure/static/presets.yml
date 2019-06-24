@@ -2,33 +2,28 @@
 # Keys: x, y, clr + filters
 ---
 default:
-  clr: pressure
-  x: enthalpy
-  y: volume
-  volume:
-  - 20
-  - 245
+  clr: dataset
+  x: x
+  y: y
 
-2:
-  clr: natoms
-  x: enthalpy
-  y: volume
-  volume:
-  - 20
-  - 245
-
-3:
-  clr: natoms
-  x: pressure
-  y: volume
-  volume:
-  - 20
-  - 245
-
-4:
+'2':
   clr: enthalpy
+  dataset:
+  - 1GPa
+  x: x
+  y: y
+
+'3':
+  clr: pressure
+  dataset:
+  - 1GPa
+  x: enthalpy
+  y: volume
+
+'4':
+  clr: natoms
   x: pressure
   y: volume
-  volume:
-  - 20
-  - 245
+  pressure:
+  - 0.6
+  - 10.5

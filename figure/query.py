@@ -56,8 +56,8 @@ def get_data_sqla(projections, sliders_dict, quantities, plot_info):
     x = list(map(float, x))
     y = list(map(float, y))
 
-    if projections[2] == 'bond_type':
-        #clrs = map(lambda clr: bondtypes.index(clr), clrs)
+    if projections[2] == 'dataset':
+        #clrs = map(lambda clr: datasets.index(clr), clrs)
         clrs = list(map(str, clrs))
     else:
         clrs = list(map(float, clrs))
@@ -116,8 +116,8 @@ def get_data_aiida(projections, sliders_dict, quantities, plot_info):
     cif_uuids = list(map(str, cif_uuids))
     uuids = list(map(str, uuids))
 
-    if projections[2] == 'bond_type':
-        #clrs = map(lambda clr: bondtypes.index(clr), clrs)
+    if projections[2] == 'dataset':
+        #clrs = map(lambda clr: datasets.index(clr), clrs)
         clrs = list(map(str, clrs))
     else:
         clrs = list(map(float, clrs))

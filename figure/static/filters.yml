@@ -1,6 +1,9 @@
 # Specify filters
 ---
+- x
+- y
 - volume
 - pressure
 - enthalpy
 - natoms
+- dataset

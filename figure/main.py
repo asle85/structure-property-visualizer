@@ -87,16 +87,16 @@ def load_preset(attr, old, new):  # pylint: disable=unused-argument,redefined-bu
 
 # quantities
 nq = len(config.quantities)
-#bondtypes = list(config.bondtype_dict.keys())
-#bondtype_colors = list(config.bondtype_dict.values())
+datasets = list(config.dataset_dict.keys())
+datasets_colors = list(config.dataset_dict.values())
 
 # quantity selectors
 plot_options = [(q, config.quantities[q]['label']) for q in config.plot_quantities]
 inp_x = Select(title='X', options=plot_options)
 inp_y = Select(title='Y', options=plot_options)
-inp_clr = Select(title='Color', options=plot_options)
-#inp_clr = Select(title='Color',
-#                 options=plot_options + [('bond_type', 'Bond type')])
+#inp_clr = Select(title='Color', options=plot_options)
+inp_clr = Select(title='Color',
+                 options=plot_options + [('dataset', 'Dataset')])
 
 
 def on_filter_change(attr, old, new):  # pylint: disable=unused-argument
@@ -172,7 +172,7 @@ def create_plot():
     """Creates scatter plot.
 
     Note: While it is usually enough to update the data source, redrawing the
-    plot is needed for bond_type coloring, when the colormap needs to change
+    plot is needed for dataset coloring, when the colormap needs to change
     and the colorbar is removed.
     """
     global source
@@ -199,12 +199,12 @@ def create_plot():
     p_new.title.text_font_size = '10pt'
     p_new.title.text_font_style = 'italic'
 
-    if inp_clr.value == 'bond_type':
+    if inp_clr.value == 'dataset':
         from bokeh.transform import factor_cmap
-        paper_palette = list(config.bondtype_dict.values())
+        paper_palette = list(config.dataset_dict.values())
         fill_color = factor_cmap('color',
                                  palette=paper_palette,
-                                 factors=bondtypes)
+                                 factors=datasets)
         p_new.circle('x',
                      'y',
                      size=10,
@@ -253,19 +253,48 @@ def update_legends(ly):
         ylabel = "{} [{}]".format(q_y["label"], q_y["unit"])
         yhover = (q_y["label"], "@y {}".format(q_y["unit"]))
 
-    q_clr = config.quantities[inp_clr.value]
-    if 'unit' not in list(q_clr.keys()):
-        clr_label = q_clr["label"]
-        clr_val = "@color"
+    # q_clr = config.quantities[inp_clr.value]
+    # if 'unit' not in list(q_clr.keys()):
+    #     clr_label = q_clr["label"]
+    #     clr_val = "@color"
+    # else:
+    #     clr_val = "@color {}".format(q_clr['unit'])
+    #     clr_label = "{} [{}]".format(q_clr["label"], q_clr["unit"])
+    # hover.tooltips = [
+    #     ("name", "@name"),
+    #     xhover,
+    #     yhover,
+    #     (q_clr["label"], clr_val),
+    # ]
+
+    if inp_clr.value == 'dataset':
+        clr_label = "Dataset"
+        hover.tooltips = [
+            ("name", "@name"),
+            xhover,
+            yhover,
+            ("Dataset", "@color"),
+        ]
     else:
-        clr_val = "@color {}".format(q_clr['unit'])
-        clr_label = "{} [{}]".format(q_clr["label"], q_clr["unit"])
-    hover.tooltips = [
-        ("name", "@name"),
-        xhover,
-        yhover,
-        (q_clr["label"], clr_val),
-    ]
+        q_clr = config.quantities[inp_clr.value]
+        if 'unit' not in list(q_clr.keys()):
+            clr_label = q_clr["label"]
+            clr_val = "@color"
+            hover.tooltips = [
+                ("name", "@name"),
+                xhover,
+                yhover,
+                (q_clr["label"], clr_val),
+            ]
+        else:
+            clr_val = "@color {}".format(q_clr['unit'])
+            clr_label = "{} [{}]".format(q_clr["label"], q_clr["unit"])
+            hover.tooltips = [
+                ("name", "@name"),
+                xhover,
+                yhover,
+                (q_clr["label"], "@color {}".format(q_clr["unit"])),
+            ]
 
     p.xaxis.axis_label = xlabel
     p.yaxis.axis_label = ylabel
@@ -323,11 +352,11 @@ btn_plot.on_click(update)
 def on_change_clr(attr, old, new):
     """Remember to redraw plot next time, when necessary.
 
-    When switching between bond_type color and something else,
+    When switching between dataset color and something else,
     the plot needs to be redrawn.
     """
     global redraw_plot
-    if (new == 'bond_type' or old == 'bond_type') and new != old:
+    if (new == 'dataset' or old == 'dataset') and new != old:
         redraw_plot = True
 
     check_uniqueness(attr, old, new)
@@ -351,5 +380,5 @@ tab = bmd.Panel(child=ly, title='Scatter plot')
 tabs = bmd.widgets.Tabs(tabs=[tab])
 
 # Put the tabs in the current document for display
-curdoc().title = "Covalent Organic Frameworks"
+curdoc().title = "AIRSS structures"
 curdoc().add_root(layout([html, tabs]))

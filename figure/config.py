@@ -14,13 +14,11 @@ plot_quantities = [
     q for q in quantities.keys() if quantities[q]['type'] == 'float' or quantities[q]['type'] == 'int'
 ]
 
-# bondtype_dict = collections.OrderedDict([
-#     ('amide', "#1f77b4"),
-#     ('amine', "#d62728"),
-#     ('imine', "#ff7f0e"),
-#     ('CC', "#2ca02c"),
-#     ('mixed', "#778899"),
-# ])
+dataset_dict = collections.OrderedDict([
+     ('10GPa', "#1f77b4"),
+     ('10GPa-II', "#d62728"),
+     ('1GPa', "#2ca02c")
+])
 
 with open(join(static_dir, "filters.yml"), 'r') as f:
     filter_list = yaml.load(f)

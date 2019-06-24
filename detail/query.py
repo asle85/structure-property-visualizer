@@ -19,7 +19,7 @@ def get_sqlite_data(name, plot_info):
 
     nresults = query.count()
     if nresults == 0:
-        plot_info.text = "No matching COF found."
+        plot_info.text = "No matching structure found."
         return None
     return query.one()
 

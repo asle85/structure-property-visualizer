@@ -69,12 +69,12 @@ def table_widget(entry):
     source = ColumnDataSource(data)
 
     columns = [
-        TableColumn(field="labels", title="Properties"),
-        TableColumn(field="values", title="Values"),
+        TableColumn(field="labels", title="Properties", width=210),
+        TableColumn(field="values", title="Values", width=210),
     ]
     data_table = DataTable(source=source,
                            columns=columns,
-                           width=500,
+                           width=420,
                            height=570,
                            index_position=None,
                            fit_columns=False)
@@ -101,7 +101,7 @@ info = dict(
     #j2sPath="https://www.materialscloud.org/discover/scripts/external/jsmol/j2s",
     serverURL="detail/static/jsmol/php/jsmol.php",
     j2sPath="detail/static/jsmol/j2s",
-    script="color cpk; set antialiasDisplay ON; load INLINE '{}'".format(structure_str)
+    script="color cpk; set antialiasDisplay ON; frank off; load INLINE '{}'".format(structure_str)
     ## Note: Need PHP server for approach below to work
     #    script="""set antialiasDisplay ON;
     #load cif::{};
