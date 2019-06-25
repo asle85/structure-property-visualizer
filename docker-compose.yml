@@ -16,4 +16,4 @@ services:
     volumes:
      - './data:/project/discover-airss/data'
     ports:
-      - '3245:5006'
+      - '3253:5006'
