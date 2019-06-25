@@ -10,7 +10,7 @@ from bokeh.plotting import figure
 from bokeh.layouts import layout, widgetbox
 import bokeh.models as bmd
 from bokeh.palettes import Viridis256
-from bokeh.models.widgets import RangeSlider, Select, Button, PreText, CheckboxButtonGroup
+from bokeh.models.widgets import Slider, RangeSlider, Select, Button, PreText, CheckboxButtonGroup
 from bokeh.io import curdoc
 
 from figure import config
@@ -322,14 +322,19 @@ def check_uniqueness(attr, old, new):
         plot_info.text = ""
         btn_plot.button_type = 'primary'
 
+# projections = [inp_x.value, inp_y.value, inp_clr.value, 'name', 'filename']
+# source.data, nresults = get_data(projections, filters_dict, config.quantities, plot_info)
+# frac_slider = Slider(start=0.1, end=1, value=min(1.0,round(50000./nresults,1)), step=0.1, callback_policy='mouseup', title="Fraction of data loaded")
+# filters_dict['fraction'] = frac_slider
 
 def update():
-    global redraw_plot, source
+    global redraw_plot, source#, nresults
 
     #update_legends(ly)
 
     projections = [inp_x.value, inp_y.value, inp_clr.value, 'name', 'filename']
 
+    #source.data, nresults = get_data(projections, filters_dict, config.quantities, plot_info)
     source.data = get_data(projections, filters_dict, config.quantities, plot_info)
 
     if redraw_plot:
@@ -345,6 +350,13 @@ def update():
     return
 
 
+#update()
+
+# inp_preset
+#controls = [inp_x, inp_y, inp_clr] + [_v for k, _v in filters_dict.items()
+#                                      ] + [frac_slider, btn_plot, plot_info]
+
+#frac_slider.on_change('value', on_filter_change)
 btn_plot.on_click(update)
 
 

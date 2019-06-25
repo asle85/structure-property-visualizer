@@ -5,6 +5,7 @@ from bokeh.models.widgets import RangeSlider, CheckboxButtonGroup
 from .config import max_points
 from six.moves import map
 from six.moves import zip
+import numpy as np
 # pylint: disable=too-many-locals
 data_empty = dict(x=[0], y=[0], uuid=['1234'], color=[0], name=['no data'])
 
@@ -38,12 +39,23 @@ def get_data_sqla(projections, sliders_dict, quantities, plot_info):
     s = select(selections).where(and_(*filters))
 
     results = engine.connect().execute(s).fetchall()
-
     nresults = len(results)
+
+    # npoints = max_points
+    # if 'fraction' in sliders_dict.keys():
+    #     fraction = sliders_dict['fraction'].value
+    #     npoints = int(np.ceil(nresults * fraction))
+
     if not results:
         plot_info.text = "No matching structures found."
         return data_empty
     elif nresults > max_points:
+        # idx = np.arange(nresults)
+        # indexed_data = dict(zip(idx, results))
+        # np.random.seed(0)
+        # np.random.shuffle(idx)
+        # idload = np.sort(idx[0:npoints])
+        # results = [indexed_data[k] for k in idload]
         results = results[:max_points]
         plot_info.text = "{} structures found.\nPlotting {}...".format(
             nresults, max_points)
@@ -62,7 +74,7 @@ def get_data_sqla(projections, sliders_dict, quantities, plot_info):
     else:
         clrs = list(map(float, clrs))
 
-    return dict(x=x, y=y, filename=filenames, color=clrs, name=names)
+    return dict(x=x, y=y, filename=filenames, color=clrs, name=names)#, nresults
 
 
 def get_data_aiida(projections, sliders_dict, quantities, plot_info):

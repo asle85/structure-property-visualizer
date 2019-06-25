@@ -16,7 +16,7 @@ from bokeh.io import curdoc
 # Put the tabs in the current document for display
 curdoc().title = "AIRSS structures"
 curdoc().template_variables["figures"] = [
-    ["2", "Structure sketchmap (1GPa dataset, enthalpy legend)"],
-    ["3", "Volume <i>vs</i> Enthalpy (1GPa dataset, number of atoms legend)"],
-    ["4", "Volume <i>vs</i> Pressure (enthalpy legend)"]
+    ["2", "Structure sketchmap (1GPa dataset)"],
+    ["3", "Volume <i>vs</i> Enthalpy (1GPa dataset)"],
+    ["4", "Volume <i>vs</i> Pressure"]
 ]
