@@ -13,6 +13,7 @@ from bokeh.models.widgets import PreText, Button
 from bokeh.io import curdoc
 from jsmol_bokeh_extension import JSMol
 from import_db import get_structure_content_from_disk as get_structure_str
+from import_db import get_structure_path
 #from import_db import get_structure_content_from_os as get_structure_str
 from detail.query import get_sqlite_data as get_data
 
@@ -101,7 +102,7 @@ info = dict(
     #j2sPath="https://www.materialscloud.org/discover/scripts/external/jsmol/j2s",
     serverURL="detail/static/jsmol/php/jsmol.php",
     j2sPath="detail/static/jsmol/j2s",
-    script="color cpk; set antialiasDisplay ON; frank off; load INLINE '{}'".format(structure_str)
+    script="color cpk; set antialiasDisplay ON; frank off; load INLINE '{}' {{3 3 3}} packed; unitcell {{1 1 1}}".format(structure_str)
     ## Note: Need PHP server for approach below to work
     #    script="""set antialiasDisplay ON;
     #load cif::{};
@@ -113,8 +114,8 @@ btn_download_structure.callback = bmd.CustomJS(args=dict(string=structure_str,
                                          code=download_js)
 
 applet = JSMol(
-    width=600,
-    height=600,
+    width=800,
+    height=800,
     script_source=script_source,
     info=info,
     js_url="detail/static/jsmol/JSmol.min.js",
